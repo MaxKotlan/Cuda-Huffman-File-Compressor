@@ -39,6 +39,25 @@ void getBinary(int n)
 	}
 }
 
+int getBitCount(int n){
+	/*loop=15 , for 16 bits value, 15th bit to 0th bit*/
+    bool preceding = false;
+    int count = 0;
+    for(int loop=15; loop>=0; loop--)
+	{
+		if( (1 << loop) & n){
+            preceding = true;
+            count++;
+            //printf("1");
+        }else if(preceding || (n==0 && loop ==0)){
+            //if (preceding)
+            count++;
+            //printf("0");
+        }
+    }
+    return count;
+}
+
 int main(int argc, char** argv){
     FileContents f = LoadFile("lotr.txt");
     //printFileContents(f);
@@ -68,11 +87,14 @@ int main(int argc, char** argv){
         }
     }
 
+    int compressedBits = 0;
     for (int i = 0; i < f.length; i++){
         unsigned char letter = f.buffer[i];
-        getBinary(freqencyIndex[letter]);
-        printf(" ");
+        compressedBits += getBitCount(freqencyIndex[letter]);
+        //printf(" ");
     }
+
+    printf("Compressed Bits: %d. Compressed Bytes: %d. Perentage: %f\n", compressedBits, compressedBits/8+1, (float)(compressedBits/8+1) / (float)f.length);
 
     //int frequencyTree[256*2 - 1];
     //for ()
