@@ -22,6 +22,23 @@ int cmp(const void *a, const void *b){
     return ((CharacterFrequency *)b)->frequency - ((CharacterFrequency *)a)->frequency;
 }
 
+void getBinary(int n)
+{
+	int loop;
+	/*loop=15 , for 16 bits value, 15th bit to 0th bit*/
+    bool preceding = false;
+    for(loop=15; loop>=0; loop--)
+	{
+		if( (1 << loop) & n){
+            preceding = true;
+            printf("1");
+        }else if(preceding || (n==0 && loop ==0)){
+            //if (preceding)
+            printf("0");
+        }
+	}
+}
+
 int main(int argc, char** argv){
     FileContents f = LoadFile("lotr.txt");
     //printFileContents(f);
@@ -30,22 +47,35 @@ int main(int argc, char** argv){
     //int hashmap[256];
     CharacterFrequency hashmap[256];
 
-
-
     for (int i = 0; i < f.length; i++){
-        char letter = f.buffer[i];
+        unsigned char letter = f.buffer[i];
         hashmap[letter].character=letter;
         hashmap[letter].frequency++;
     }
-
-
     qsort(hashmap, 256, sizeof(CharacterFrequency), cmp);
 
+    //int frequencyTree[256*2 - 1];
+
+    int freqencyIndex[256];
+
     for (int i = 0; i < 256; i++){
+        //freqencyIndex[hashmap[i].character] = 0;
         if (hashmap[i].frequency > 0){
-            printf(" %c %d \n", hashmap[i].character, hashmap[i].frequency);
+            //getBinary(i);
+            freqencyIndex[hashmap[i].character] = i;
+            //printf(" ");
+            //printf(" %c %d \n", hashmap[i].character, hashmap[i].frequency);
         }
     }
+
+    for (int i = 0; i < f.length; i++){
+        unsigned char letter = f.buffer[i];
+        getBinary(freqencyIndex[letter]);
+        printf(" ");
+    }
+
+    //int frequencyTree[256*2 - 1];
+    //for ()
 
     /*
     int bytesUsed = 0;
