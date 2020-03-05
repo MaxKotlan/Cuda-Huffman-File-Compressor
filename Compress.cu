@@ -45,6 +45,9 @@ int main(int argc, char** argv){
             swap(hashmap[parentIndex], hashmap[compareIndex]);
     }
 
+    for (int i = 0; i < hashmapsize; i++)
+        hashmap[i].frequency = rand()%100;
+
     FrequencyHeap fh = {hashmap, hashmapsize};
     
     CharacterFrequency freq = RemoveMinimumFrequencyFromHeap(fh);
